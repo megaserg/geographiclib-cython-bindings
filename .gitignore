@@ -1,0 +1,8 @@
+# created by build_ext command
+build/
+*.cpp
+*.so
+
+# created by sdist command
+MANIFEST
+dist/
