@@ -1,5 +1,19 @@
 # Cython extension module for ``geographiclib``
 
+## TL;DR
+
+```bash
+# for Ubuntu
+sudo apt-get install -y libgeographic-dev
+# for macOS:
+brew install geographiclib
+
+# and then:
+pip install geographiclib-cython-bindings
+```
+
+For instructions on how to build and distribute, read on.
+
 ## Prerequisites
 
 The following instructions are tested for Ubuntu 16.04, Amazon Linux, and macOS Sierra 10.12.
