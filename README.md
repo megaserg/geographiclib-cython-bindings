@@ -2,6 +2,10 @@
 
 ## TL;DR
 
+Pythonic [`geographiclib` package](https://pypi.python.org/pypi/geographiclib) reimplements geodesic math in Python. Using Cython bindings for C++ version of `geographiclib` allows for **60-90x** speedup for geodesic functions.
+
+**Warning:** only `Inverse()`, `Direct()`, and `InverseLine()` for `Geodesic.WGS84` are implemented. For `GeodesicLine`, only `Position()` is implemented.
+
 ```bash
 # for Ubuntu
 sudo apt-get install -y libgeographic-dev
@@ -140,6 +144,20 @@ Out[3]:
  'lon1': 20.0,
  'lon2': 40.00000000000001,
  's12': 3035728.956905633}
+```
+
+## Speedup
+
+```python
+>>> import timeit
+>>> timeit.timeit('Geodesic.WGS84.Inverse(10, 20, 30, 40)', setup='from geographiclib.geodesic import Geodesic', number=10000)
+1.7752603970002383
+>>> timeit.timeit('Geodesic.WGS84.Inverse(10, 20, 30, 40)', setup='from geographiclib_cython import Geodesic', number=10000)
+0.024111284990794957
+>>> timeit.timeit('Geodesic.WGS84.Direct(10, 20, 30, 40000)', setup='from geographiclib.geodesic import Geodesic', number=100000)
+7.022558598022442
+>>> timeit.timeit('Geodesic.WGS84.Direct(10, 20, 30, 40000)', setup='from geographiclib_cython import Geodesic', number=100000)
+0.12127103898092173
 ```
 
 ## Gotchas
