@@ -94,6 +94,12 @@ python setup.py sdist --cython
 The result will be a `dist/` directory with a distribution named like `geographiclib-cython-bindings-1.0.0.tar.gz` inside.
 The archive contains `setup.py` and `geographiclib_cython.cpp`, so users can build and install it without having Cython!
 
+To publish to PyPI, run:
+
+```bash
+twine upload -r pypi dist/*
+```
+
 ## Install
 
 To install, locate the `.tar.gz` distribution and run:
