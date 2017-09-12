@@ -1,16 +1,31 @@
 #distutils: language=c++
 
 cimport cgeographiclib
+from libcpp cimport bool as cbool
 
 class Geodesic:
     WGS84 = PyGeodesic()
 
+    @staticmethod
+    def Sphere(radius=6372795):
+        return PyGeodesic(radius)
+
 cdef class PyGeodesic:
 
     cdef const cgeographiclib.Geodesic* geodesic
+    cdef cbool needs_delete
 
-    def __cinit__(self):
-        self.geodesic = &(cgeographiclib.Geodesic.WGS84())
+    def __cinit__(self, double radius=0.0):
+        if radius == 0.0:
+            self.geodesic = &(cgeographiclib.Geodesic.WGS84())
+            self.needs_delete = False
+        else:
+            self.geodesic = new cgeographiclib.Geodesic(radius, 0.0)
+            self.needs_delete = True
+
+    def __dealloc__(self):
+        if self.needs_delete:
+            del self.geodesic
 
     cpdef Direct(self, double lat1, double lon1, double azi1, double s12):
         cdef double lat2 = 0.0, lon2 = 0.0, azi2 = 0.0

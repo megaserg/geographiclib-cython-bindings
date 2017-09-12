@@ -2,6 +2,7 @@ import unittest
 import pytest
 from geographiclib.geodesic import Geodesic
 from geographiclib_cython import Geodesic as CythonGeodesic
+from geopy.distance import great_circle
 
 # Run with: python -m pytest tests.py
 
@@ -32,3 +33,9 @@ class TestGeodesic(unittest.TestCase):
         expected_pos = expected_line.Position(100000)
         assert actual_pos['lat2'] == pytest.approx(expected_pos['lat2'], 1e-10)
         assert actual_pos['lon2'] == pytest.approx(expected_pos['lon2'], 1e-10)
+
+    def test_sphere_distance(self):
+        actual = CythonGeodesic.Sphere().Inverse(10, 20, 30, 40)
+        expected = great_circle((10, 20), (30, 40))
+
+        assert actual['s12'] == pytest.approx(expected.meters, 1e-10)

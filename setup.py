@@ -21,7 +21,7 @@ if USE_CYTHON:
 setup(
     name="geographiclib-cython-bindings",
     description="""Cython extension module for C++ geographiclib functions""",
-    version="0.1.3",
+    version="0.2.0",
     author="Sergey Serebryakov",
     author_email="sergey@serebryakov.info",
     url="https://github.com/megaserg/geographiclib-cython-bindings",
