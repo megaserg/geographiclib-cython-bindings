@@ -185,6 +185,24 @@ Do this (solution found [here](https://github.com/BVLC/caffe/issues/4953)):
 conda install libgcc
 ```
 
+- If you get this error when doing `import Geodesic`:
+```bash
+ImportError: /opt/anaconda/lib/python3.5/site-packages/geographiclib_cython.cpython-35m-x86_64-linux-gnu.so: undefined symbol: _ZNK13GeographicLib8Geodesic11Invej
+```
+Then you have an incompatible version of libGeographic installed. Check where it's coming from:
+```bash
+ldd /opt/anaconda/lib/python3.5/site-packages/geographiclib_cython.cpython-35m-x86_64-linux-gnu.so
+    linux-vdso.so.1 =>  (0x00007fffac2ea000)
+    libGeographic.so.9 => /usr/lib/libGeographic.so.9 (0x00007f86ff6bb000)
+    ...
+```
+Remove it and remove the `.whl` from the `pip` cache (do `find ~ -name "*.whl"` to find out where the cache is):
+```bash
+rm /usr/lib/libGeographic*
+rm ~/.cache/pip/wheels/0e/68/e7/7cadf8180052771a12c112ac3cda44363135ecb14cfd57a500/geographiclib_cython_bindings-1.0.0-cp35m-x86_64.whl
+```
+Then do `pip install` again.
+
 ## Useful links
 - [`geographiclib` installation manual](https://geographiclib.sourceforge.io/html/install.html)
 - [GeographicLib::Geodesic C++ class reference](https://geographiclib.sourceforge.io/html/classGeographicLib_1_1Geodesic.html)
