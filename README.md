@@ -5,6 +5,7 @@
 Pythonic [`geographiclib` package](https://pypi.python.org/pypi/geographiclib) reimplements geodesic math in Python. Using Cython bindings for C++ version of `geographiclib` allows for **60-90x** speedup for geodesic functions.
 
 **Warning:** only `Inverse()`, `Direct()`, and `InverseLine()` for `Geodesic.WGS84` are implemented. For `GeodesicLine`, only `Position()` is implemented.
+For `Rhumb.WGS84`, `Direct()`, `Inverse()`, `Line()`, and `InverseLine()` are implemented. For `RhumbLine`, `Position()` is implemented, as well as an extra method `Positions()` as an efficient workaround to Cython limitations.
 
 ```bash
 # for Ubuntu
@@ -59,9 +60,12 @@ pip install cython
 
 There are two Cython files: `cgeographiclib.pxd` describing the C++ API of the `libGeographic` library, and `geographiclib_cython.pyx` describing classes that will be visible from Python user code. 
 The `.pyx` imports `.pxd` to learn about C++ classes and functions available to be called.
+An additional file `cython_extern_src/rhumb_line_positions.cpp` contains C++ code that is directly included in the `.pyx` file.
 
 We wrap C++ classes `Geodesic` and `GeodesicLine` into Cython classes `PyGeodesic` and `PyGeodesicLine`. 
 Additionally, we define a pure Python class `Geodesic` with a single field `WGS84` to mimic the behavior of the official `geographiclib` package.
+
+Similarly, we wrap C++ classes `Rhumb` and `RhumbLine` into Cython classes `PyRhumb` and `PyRhumbLine`. (Note: Due to limitations in Cython, the `PyRhumbLine` class is not able to directly wrap the C++ `RhumbLine`, so a workaround is used.) We also define a pure Python class `Rhumb` with a single field `WGS84` to mimic the behavior of the official `geographiclib` package.
 
 There is also `setup.py` file. 
 This file describes how to build the extension module, using `distutils`.

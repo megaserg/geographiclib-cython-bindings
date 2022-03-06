@@ -11,8 +11,10 @@ file_ext = ".pyx" if USE_CYTHON else ".cpp"
 extensions = [Extension(
     "geographiclib_cython",
     ["geographiclib_cython"+file_ext],
-    libraries=["Geographic"]
-)]
+    libraries=["Geographic"],
+    extra_compile_args=["-std=c++11"]
+)
+]
 
 if USE_CYTHON:
     from Cython.Build import cythonize
@@ -21,7 +23,7 @@ if USE_CYTHON:
 setup(
     name="geographiclib-cython-bindings",
     description="""Cython extension module for C++ geographiclib functions""",
-    version="0.2.0",
+    version="0.3.0",
     author="Sergey Serebryakov",
     author_email="sergey@serebryakov.info",
     url="https://github.com/megaserg/geographiclib-cython-bindings",
